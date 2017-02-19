@@ -38,6 +38,12 @@
     <Compile Include="src\Lib\Rss\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\Lib\YouTube\YouTube.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Lib\YouTube\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\Lib\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -57,6 +63,7 @@
     <Folder Include="src\Lib\" />
     <Folder Include="src\Lib\Config\" />
     <Folder Include="src\Lib\Rss\" />
+    <Folder Include="src\Lib\YouTube\" />
     <Folder Include="tests\" />
     <Folder Include="src\" />
   </ItemGroup>

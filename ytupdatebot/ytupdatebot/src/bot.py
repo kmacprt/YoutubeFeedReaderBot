@@ -12,6 +12,7 @@ import json
 import feedparser
 from apscheduler.schedulers.background import BackgroundScheduler
 from Lib.Rss import GetFromLink
+from Lib.YouTube import YouTube
 
 from emoji import emojize
 from uuid import *
@@ -63,13 +64,34 @@ def default(bot, update):
 
 @run_async
 def inline(bot, update):
-    inline = update.test
+    query = update.inline_query.query
+    results = list()
+    results.append(InlineQueryResultArticle(id=uuid4(), title="YoutubeLink",input_message_content=InputTextMessageContent(query)))
+    update.inline_query.answer(results)
 
-@run_async
+
 def callback(bot, update):
     query = update.callback_query
-    #pprint(update)
-    bot.sendMessage(query.message.chat_id, "I'm not your Bot, man")
+    data = json.loads(str(query.data))
+    pprint(data)
+    thumbsup = data['up']
+    thumbsdown = data['down']
+    scream = data['wow']
+    if data['cmd'] == 'up':
+        thumbsup = thumbsup + 1
+    if data['cmd'] == 'down':
+        thumbsdown = thumbsdown + 1
+    if data['cmd'] == 'wow':
+        scream = scream + 1
+
+    bot.editMessageReplyMarkup('@rapde', query.message.message_id, reply_markup=InlineKeyboardMarkup(
+                        [
+                            [InlineKeyboardButton(emojize(':thumbsup: ({0})'.format(thumbsup), use_aliases=True), callback_data='{"cmd":"up","up":'+str(thumbsup)+',"down":'+str(thumbsdown)+',"wow":'+str(scream)+'}'),
+                            InlineKeyboardButton(emojize(':thumbsdown: ({0})'.format(thumbsdown), use_aliases=True), callback_data='{"cmd":"down","up":'+str(thumbsup)+',"down":'+str(thumbsdown)+',"wow":'+str(scream)+'}'),
+                            InlineKeyboardButton(emojize(':scream: ({0})'.format(scream), use_aliases=True), callback_data='{"cmd":"wow","up":'+str(thumbsup)+',"down":'+str(thumbsdown)+',"wow":'+str(scream)+'}')],
+                        ]
+        )
+    )
         
 @run_async
 def error(bot, update, error):
@@ -83,19 +105,27 @@ def postTheRss(bot, rss, lastUpdateDateTime):
         feed = GetFromLink.Parse(ent)
         for entry in feed.entries:
             if arrow.get(entry['published']) > lastUpdate:
+                keyboard = [
+                                [InlineKeyboardButton(emojize(':thumbsup:', use_aliases=True), callback_data='{"cmd":"up","up":0,"down":0,"wow":0}'),
+                                InlineKeyboardButton(emojize(':thumbsdown:', use_aliases=True), callback_data='{"cmd":"down","up":0,"down":0,"wow":0}'),
+                                InlineKeyboardButton(emojize(':scream:', use_aliases=True), callback_data='{"cmd":"wow","up":0,"down":0,"wow":0}')],
+                                [InlineKeyboardButton("Video", url=entry['link']),
+                                InlineKeyboardButton("Share", switch_inline_query=feed['feed']['link'])]
+                            ]
                 bot.sendMessage(
                     #config['ChannelName'],
                     "@rapde",
-                    emojize(":musical_note: [{title}]({videolink})\n:bust_in_silhouette: [{channel}]({channellink})", use_aliases=True).format(
+                    emojize(":musical_note: [{title}]({videolink})\n:bust_in_silhouette: [{channel}]({channellink})\nOnline seit {published}", use_aliases=True).format(
                     #config['MessageTemplate'].format(
                         title=entry['title'],
                         videolink=entry['link'],
                         channel=entry['author'],
-                        channellink=feed['feed']['link']
+                        channellink=feed['feed']['link'],
+                        published = arrow.get(entry['published']).humanize(locale='de')
                         #duration=datetime.timedelta(seconds=entry['media_starrating']['average'])
                     ),
                     parse_mode=ParseMode.MARKDOWN,
-                    reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Video", url=entry['link']), InlineKeyboardButton("Channel", url=feed['feed']['link'])]]) #InlineKeyboardButton("Share", callback_data=entry['link'])]])
+                    reply_markup=InlineKeyboardMarkup(keyboard)
                     )
     pprint(str(lastUpdate))
     lastUpdate = arrow.utcnow()
