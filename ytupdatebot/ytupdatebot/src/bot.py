@@ -139,7 +139,7 @@ def main():
     global lastUpdate
     withoutErrors = True
 
-    lastUpdate = arrow.get('2017-02-10T02:51:13+00:00')#arrow.utcnow()
+    lastUpdate = arrow.get('2016-02-10T02:51:13+00:00')#arrow.utcnow()
     scheduler = BackgroundScheduler()
     config = Config.Read.Config('config.json')
     updater = Updater(config['Bot']['Token'])
