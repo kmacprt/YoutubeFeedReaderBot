@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>d6a38d50-7b09-4f2c-a183-efccef0ab6b4</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>src/bot.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>ytupdatebot</Name>
+    <RootNamespace>ytupdatebot</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src\bot.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Lib\Config\Config.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Lib\Config\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Lib\Rss\GetFromLink.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Lib\Rss\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Lib\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\CreateConfigFile.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\DateTimeTest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\RssTest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ytupdatebot.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="docs\" />
+    <Folder Include="src\Lib\" />
+    <Folder Include="src\Lib\Config\" />
+    <Folder Include="src\Lib\Rss\" />
+    <Folder Include="tests\" />
+    <Folder Include="src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\config.json" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />
+  <Import Condition="!Exists($(PtvsTargetsFile))" Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
