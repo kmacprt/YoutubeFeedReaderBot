@@ -139,12 +139,12 @@ def main():
     global lastUpdate
     withoutErrors = True
 
-    lastUpdate = arrow.get('2016-02-10T02:51:13+00:00')#arrow.utcnow()
+    lastUpdate = arrow.get('2017-01-10T02:51:13+00:00')#arrow.utcnow()
     scheduler = BackgroundScheduler()
     config = Config.Read.Config('config.json')
     updater = Updater(config['Bot']['Token'])
     tgBot = updater.bot
-    scheduler.add_job(postTheRss, 'interval', minutes=1, start_date=datetime.datetime.now() + datetime.timedelta(seconds=5), id='postUpdatesToTheChannel', args=[tgBot, config['rss'], lastUpdate])
+    scheduler.add_job(postTheRss, 'interval', minutes=5, start_date=datetime.datetime.now() + datetime.timedelta(seconds=5), id='postUpdatesToTheChannel', args=[tgBot, config['rss'], lastUpdate])
     scheduler.start()
 
     while withoutErrors:
